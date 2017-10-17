@@ -1,0 +1,26 @@
+- Command can launch a tkinter gui to show available placeholders and even
+do some basic formatting before writing out to $PWD.
+- GUI can also make it easy to customize or add more templitz.
+- GUI can offer to set up $TEMPLITZ_PATH in .bashrc if not set, etc.
+
+
+Other template ideas:
+- basic python app
+- basic tkinter apps, different designs for frames.
+- basic README.rst for a python pkg on pypi and github
+- basic flit.ini
+- basic travis.yml
+- basic vimrc
+- basic new test_blah.py file for pytest
+- new .coveragerc
+- new .env
+- new .pypirc
+- new bash file with some basic stuff, e.g. a function, a loop
+- new asyncio app
+- new cython module, with build script
+- new cython module, with build script as a *main* executable.
+- new asciidoc file?
+- new RST file/project?
+- new alembic migration
+- new postgres stored procedures, triggers
+- new pyzmq app
