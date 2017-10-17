@@ -1,0 +1,27 @@
+.. image:: https://travis-ci.org/cjrh/${package}.svg?branch=master
+    :target: https://travis-ci.org/cjrh/${package}
+
+.. image:: https://coveralls.io/repos/github/cjrh/${package}/badge.svg?branch=master
+    :target: https://coveralls.io/github/cjrh/${package}?branch=master
+
+.. image:: https://img.shields.io/pypi/pyversions/${package}.svg
+    :target: https://pypi.python.org/pypi/${package}
+
+.. image:: https://img.shields.io/github/tag/cjrh/${package}.svg
+    :target: https://img.shields.io/github/tag/cjrh/${package}.svg
+
+.. image:: https://img.shields.io/badge/install-pip%20install%20${package}-ff69b4.svg
+    :target: https://img.shields.io/badge/install-pip%20install%20${package}-ff69b4.svg
+
+.. image:: https://img.shields.io/pypi/v/${package}.svg
+    :target: https://img.shields.io/pypi/v/${package}.svg
+
+.. image:: https://img.shields.io/badge/calver-YYYY.MM.MINOR-22bfda.svg
+    :target: http://calver.org/
+
+**ALPHA**
+
+${package}
+======================
+
+<Text goes here.>
