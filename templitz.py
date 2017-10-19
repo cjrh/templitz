@@ -9,7 +9,7 @@ from cjrh_template import Template
 import biodome
 
 
-__version__ = '2017.10.1'
+__version__ = '2017.10.2'
 
 
 @contextmanager
@@ -19,7 +19,7 @@ def file_or_stdout(args):
     else:
         # Remove the trailing ".templitz"
         fname = args.template.rpartition('.')[0]
-        target = os.path.join(args.outdir, target)
+        target = os.path.join(args.outdir, fname)
         f = open(target, 'w+')
     try:
         yield f
