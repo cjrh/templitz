@@ -28,7 +28,7 @@ def file_or_stdout(args):
             f.close()
 
 
-def load_template(args):
+def all_templates(args):
     paths = biodome.environ.get('TEMPLITZ_PATH', '').split(os.pathsep)
     # Current dir first, and /library of templitz.py dir as last resort
     paths = chain(
@@ -36,9 +36,18 @@ def load_template(args):
         paths,
         [os.path.join(os.path.dirname(__file__), 'library')]
     )
-    possibles = (os.path.join(p, args.template) for p in paths)
-    for hit in possibles:
-        if os.path.exists(hit):
+    for p in paths:
+        if not os.path.exists(p):
+            continue
+        for fname in os.listdir(p):
+            if fname.endswith('.templitz'):
+                yield p, fname
+
+
+def load_template(args):
+    paths = biodome.environ.get('TEMPLITZ_PATH', '').split(os.pathsep)
+    for path, hit in all_templates(args):
+        if args.template in hit:
             break
     else:
         msg = (f'Error: template "{args.template}" not found in any of '
@@ -46,7 +55,7 @@ def load_template(args):
         msg += '\n'.join(paths)
         raise FileNotFoundError(msg)
 
-    with open(hit) as f:
+    with open(os.path.join(path, hit)) as f:
         data = f.read()
 
     return Template(data)
@@ -54,7 +63,10 @@ def load_template(args):
 
 def subs(args):
     tmpl = load_template(args)
-    output = tmpl.safe_substitute({})
+    params = {
+        x.partition('=')[0]: x.partition('=')[2] for x in args.params
+    }
+    output = tmpl.safe_substitute(params)
     with file_or_stdout(args) as f:
         f.write(output)
 
@@ -70,20 +82,28 @@ def info(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--templit')
+    parser.add_argument('-t', '--template')
     parser.add_argument('-i', '--info', help='Information about the templit.',
                         action='store_true')
-    parser.add_argument('-l', '--list', help='List all available templitz.')
+    parser.add_argument(
+        '-l', '--list', help='List all available templitz.',
+        action='store_true'
+    )
     parser.add_argument('-s', '--stdout', action='store_true',
                         help='Write to stdout instead of file.')
     parser.add_argument('-o', '--outdir', help='Output directory.',
                         default=os.getcwd())
+    parser.add_argument(
+        '-p', '--params', nargs='+', default=[]
+    )
     args = parser.parse_args()
+    print(args.params)
     try:
         if args.info:
             info(args)
         elif args.list:
-            raise NotImplementedError
+            for path, fname in all_templates(args):
+                print(path, fname)
         else:
             subs(args)
     except FileNotFoundError as e:
