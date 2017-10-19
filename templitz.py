@@ -27,6 +27,7 @@ def file_or_stdout(args):
         if f is not sys.stdout:
             f.close()
 
+
 def load_template(args):
     paths = biodome.environ.get('TEMPLITZ_PATH', '').split(os.pathsep)
     # Current dir first, and /library of templitz.py dir as last resort
@@ -69,10 +70,10 @@ def info(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--templit', required=True)
+    parser.add_argument('-t', '--templit')
     parser.add_argument('-i', '--info', help='Information about the templit.',
                         action='store_true')
-    parser.add_argument('-l', '--list', help='List all available templitz.' )
+    parser.add_argument('-l', '--list', help='List all available templitz.')
     parser.add_argument('-s', '--stdout', action='store_true',
                         help='Write to stdout instead of file.')
     parser.add_argument('-o', '--outdir', help='Output directory.',
