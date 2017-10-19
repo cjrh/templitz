@@ -86,7 +86,7 @@ def main():
         else:
             subs(args)
     except FileNotFoundError as e:
-        print(f'Error: {e!}')
+        print(f'Error: {e!s}')
 
 
 if __name__ == '__main__':
