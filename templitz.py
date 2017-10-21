@@ -4,6 +4,7 @@ import sys
 from typing import Optional
 from contextlib import contextmanager
 import os
+import shlex
 from itertools import chain
 from cjrh_template import Template
 import biodome
@@ -13,8 +14,9 @@ __version__ = '2017.10.2'
 
 
 @contextmanager
-def file_or_stdout(args):
-    paths = biodome.environ.get('TEMPLITZ_PATH', '').split(os.pathsep)
+def file_or_stdout(args, filename=None):
+    """If target_filename is None, just strip off the .templitz
+    extension off args.template and used that as the target name."""
     for path, hit in all_templates(args):
         if args.template in hit:
             break
@@ -25,7 +27,7 @@ def file_or_stdout(args):
         f = sys.stdout
     else:
         # Remove the trailing ".templitz"
-        fname = hit.rpartition('.')[0]
+        fname = filename or hit.rpartition('.')[0]
         target = os.path.join(args.outdir, fname)
         f = open(target, 'w+')
     try:
@@ -74,7 +76,24 @@ def subs(args):
         x.partition('=')[0]: x.partition('=')[2] for x in args.params
     }
     output = tmpl.safe_substitute(params)
-    with file_or_stdout(args) as f:
+
+    # Strip out lines starting with "#templitz" and process settings in
+    # them.
+    settings = {}
+    final_lines = []
+    for line in output.splitlines(False):
+        if line.startswith('#templitz'):
+            data = line.partition('#templitz')[2]
+            for item in shlex.split(data):
+                key, _, value = item.partition('=')
+                # Handle toggles/bools automatically
+                settings[key] = value.strip('"') or True
+        else:
+            final_lines.append(line)
+
+    output = '\n'.join(final_lines)
+    filename = settings.get('filename')
+    with file_or_stdout(args, filename=filename) as f:
         f.write(output)
 
 
