@@ -1,0 +1,43 @@
+#templitz filename=appveyor.yml
+environment:
+
+  username: cjrh
+  password:
+    secure: MYZ6oC04eTIab1NvjVE4iIIisKCrZh7XXvOx4sZLqGM=
+
+  matrix:
+
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
+
+install:
+  # We need wheel installed to build wheels
+  - "%PYTHON%\\python.exe -m pip install -U pip setuptools wheel"
+  - "%PYTHON%\\python.exe -m pip install requirements-test.txt"
+
+build: off
+
+test_script:
+  # Might need PYTHONPATH=. at the start
+  - "%PYTHON%\\python.exe -m pytest --cov"
+
+after_test:
+  - "%PYTHON%\\python.exe setup.py bdist_wheel"
+
+artifacts:
+  - path: dist\*
+
+#on_success:
+#  - TODO: upload the content of dist/*.whl to a public wheelhouse
+#
+
+deploy_script:
+  - "echo [pypi] > %USERPROFILE%\\.pypirc"
+  - "echo username: %username% >> %USERPROFILE%\\.pypirc"
+  - "echo password: %password% >> %USERPROFILE%\\.pypirc"
+  - "%PYTHON%\\python.exe -m pip install flit"
+  - "%PYTHON%\\python.exe -m flit publish"
