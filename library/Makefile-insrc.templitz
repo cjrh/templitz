@@ -1,3 +1,4 @@
+#templitz filename=Makefile
 TARGET ?= a.out
 SRC_DIRS ?= ./src
 

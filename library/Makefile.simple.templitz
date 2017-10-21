@@ -1,3 +1,4 @@
+#templitz filename=Makefile
 src = $(wildcard *.c)
 obj = $(src:.c=.o)
 
