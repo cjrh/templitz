@@ -14,7 +14,7 @@ __version__ = '2017.10.2'
 
 
 @contextmanager
-def file_or_stdout(args, filename=None):
+def file_or_stdout(args, filename: Optional[str] = None):
     """If target_filename is None, just strip off the .templitz
     extension off args.template and used that as the target name."""
     for path, hit in all_templates(args):
@@ -38,11 +38,11 @@ def file_or_stdout(args, filename=None):
 
 
 def all_templates(args):
-    paths = biodome.environ.get('TEMPLITZ_PATH', '').split(os.pathsep)
+    pathstr: str = biodome.environ.get('TEMPLITZ_PATH', '').split(os.pathsep)
     # Current dir first, and /library of templitz.py dir as last resort
     paths = chain(
         [os.getcwd()],
-        paths,
+        pathstr,
         [os.path.join(os.path.dirname(__file__), 'library')]
     )
     for p in paths:
