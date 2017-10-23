@@ -123,7 +123,6 @@ def main():
         '-p', '--params', nargs='+', default=[]
     )
     args = parser.parse_args()
-    print(args.params)
     try:
         if args.info:
             info(args)
