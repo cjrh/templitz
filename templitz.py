@@ -10,7 +10,7 @@ from cjrh_template import Template
 import biodome
 
 
-__version__ = '2017.10.2'
+__version__ = '2017.10.3'
 
 
 @contextmanager
