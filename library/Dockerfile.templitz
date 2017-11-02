@@ -1,0 +1,12 @@
+FROM {registry}/{image}
+
+RUN pip install --upgrade pip
+RUN rm -f /etc/pip.conf
+
+COPY . /app
+RUN pip install /app
+
+COPY ./entrypoint.sh /usr/bin/entrypoint
+RUN chmod +x /usr/bin/entrypoint
+
+ENTRYPOINT ["/usr/bin/entrypoint"]
