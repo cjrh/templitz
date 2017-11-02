@@ -1,0 +1,23 @@
+version: 1
+disable_existing_loggers: False
+formatters:
+    default:
+        format: "%(asctime)-15s %(levelname)-6s %(name)s.%(funcName)s %(message)s"
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: INFO
+        formatter: default
+        stream: ext://sys.stdout
+
+loggers:
+    paramiko:
+      level: WARN
+      handlers: [console]
+      qualname: paramiko
+      propagate: false
+
+root:
+    level: NOTSET
+    handlers: [console]
