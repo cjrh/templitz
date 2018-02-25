@@ -1,0 +1,17 @@
+src = $(wildcard *.cpp)
+
+# Obtain the necessary includes for pybind AND python
+PYINCLUDES := $(shell python -m pybind11 --includes)
+# Obtain the required file extension for the shared object.
+# e.g. example.cpython-36m-x86_64-linux-gnu.so
+PYSOEXT := $(shell python -c 'import sysconfig as sc; print(sc.get_config_var("SO"), end="")')
+CFLAGS = -O0 -Wall -shared -std=c++11 -fPIC $(PYINCLUDES)
+
+example$(PYSOEXT): $(src)
+	@echo PYINCLUDES IS $(PYINCLUDES)
+	@echo PYSOEXT IS $(PYSOEXT)
+	$(CXX) $(CFLAGS) -o $@ $^
+
+.PHONY: clean
+clean:
+	rm -f $(obj) example$(PYSOEXT)
