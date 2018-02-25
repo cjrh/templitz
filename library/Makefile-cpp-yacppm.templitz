@@ -1,0 +1,20 @@
+# http://www.cplusplus.com/forum/unices/12499/#msg59885
+CC      = g++
+CFLAGS  = -I/home/scale/g++Projects/gLib/
+LDFLAGS = -lfltk
+
+all: octhecdec clean
+
+octhecdec: octhecdec.o
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+octhecdec.o: octhecdec.cpp octhecdec.h
+	$(CC) -c $(CFLAGS) $<
+
+.PHONY: clean cleanest
+
+clean:
+	rm *.o
+
+cleanest: clean
+	rm octhecdec
